@@ -29,11 +29,14 @@ def get_colors(image, number_of_colors, show_chart):
     ordered_colors = [center_colors[i]/255 for i in counts.keys()]
     hex_colors = [RGB2HEX(ordered_colors[i]*255) for i in counts.keys()]
     rgb_colors = [ordered_colors[i]*255 for i in counts.keys()]
-    
     return rgb_colors
+
+def printRGB(imagePath):
+    colors = get_colors(get_image(imagePath), 8, True)
+    return colors
 
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--imagePath', default='N/A')
     args = parser.parse_args()
-    print(get_colors(get_image(args.imagePath), 8, True))
+    printRGB(args.imagePath)
