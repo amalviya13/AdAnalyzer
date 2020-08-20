@@ -12,8 +12,8 @@ from colorAnalyzer import *
 import os
 import webcolors
 
-def closes_color(imagePath):
-    colorList = printRGB(imagePath)
+def closest_color(imagePath):
+    colorList = printTopRGB(imagePath)
     for requested_colour in colorList:
         min_colours = {}
         for key, name in webcolors.css21_hex_to_names.items():
@@ -29,4 +29,4 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--imagePath', default='N/A')
     args = parser.parse_args()
-    closes_color(args.imagePath)
+    closest_color(args.imagePath)
