@@ -12,21 +12,17 @@ from colorAnalyzer import *
 import os
 import webcolors
 
-def closest_color(imagePath):
-    colorList = printTopRGB(imagePath)
-    for requested_colour in colorList:
-        min_colours = {}
-        for key, name in webcolors.css21_hex_to_names.items():
-            r_c, g_c, b_c = webcolors.hex_to_rgb(key)
-            rd = (r_c - requested_colour[0]) ** 2
-            gd = (g_c - requested_colour[1]) ** 2
-            bd = (b_c - requested_colour[2]) ** 2
-            min_colours[(rd + gd + bd)] = name
-        #return min_colours[min(min_colours.keys())]
-        print(min_colours[min(min_colours.keys())])
+def closest_color(requested_colour):
+    min_colours = {}
+    for key, name in webcolors.css21_hex_to_names.items():
+        r_c, g_c, b_c = webcolors.hex_to_rgb(key)
+        rd = (r_c - requested_colour[0]) ** 2
+        gd = (g_c - requested_colour[1]) ** 2
+        bd = (b_c - requested_colour[2]) ** 2
+        min_colours[(rd + gd + bd)] = name
+    return min_colours[min(min_colours.keys())]
 
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--imagePath', default='N/A')
     args = parser.parse_args()
-    closest_color(args.imagePath)
