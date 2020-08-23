@@ -13,6 +13,7 @@ from colorAnalyzer import *
 import os
 import webcolors
 from scipy.spatial import KDTree
+from PIL import Image
 
 def RGB2HEX(color):
     return "#{:02x}{:02x}{:02x}".format(int(color[0]), int(color[1]), int(color[2]))
@@ -38,6 +39,19 @@ def top_colors(image, number_of_colors, show_chart):
     for rgb in rgb_colors:
         colorList.append(closest_color(rgb))
     return colorList
+
+def weightedColors(imagePath):
+    colorDict = {}
+    im = Image.open(imagePath)
+    width, height = im.size
+    for x in range(0,width,10):
+        for y in range(0,height,10):
+            close_color = closest_color(im.getpixel((x,y)))
+            if close_color in colorDict:
+                colorDict[close_color] = colorDict[close_color] + 1
+            else:
+                colorDict[close_color] = 1
+    return sorted(colorDict.items(), key=lambda x: x[1])
 
 def get_pallete_colors(imagePath):
     color_thief = ColorThief(imagePath)
@@ -73,3 +87,4 @@ if __name__ == '__main__':
     print(get_top_colors(args.imagePath)) #Answers for top colors change each iteration but also gives weightage
     print(get_dominant_color(args.imagePath)) #Most dominant color
     print(get_pallete_colors(args.imagePath)) #Returns top 8 colors - seems more accurate than get_top_colors
+    print(weightedColors(args.imagePath)) #Get how many times a pixel color appears in image - checks every 5 pixels to run faster
