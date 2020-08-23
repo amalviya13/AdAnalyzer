@@ -44,8 +44,8 @@ def weightedColors(imagePath):
     colorDict = {}
     im = Image.open(imagePath)
     width, height = im.size
-    for x in range(0,width,10):
-        for y in range(0,height,10):
+    for x in range(0,width,5):
+        for y in range(0,height,5):
             close_color = closest_color(im.getpixel((x,y)))
             if close_color in colorDict:
                 colorDict[close_color] = colorDict[close_color] + 1
