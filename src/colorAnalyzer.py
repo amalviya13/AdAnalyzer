@@ -114,4 +114,4 @@ if __name__ == '__main__':
     print(get_dominant_color(args.imagePath)) #Most dominant color
     print(get_pallete_colors(args.imagePath)) #Returns top 8 colors - seems more accurate than get_top_colors
     print(weightedColors(args.imagePath)) #Get how many times a pixel color appears in image - checks every 5 pixels to run faster
-    #print(get_color_set(args.filePath))
+    print(get_color_set(args.filePath))

@@ -42,7 +42,7 @@ def top_colors(image, number_of_colors, show_chart):
 def weightedColors(imagePath):
     colorDict = {}
     im = Image.open(imagePath)
-    im = im.resize((400, 400))
+    im = im.resize((200, 200))
     width, height = im.size
     for x in range(0,width,2):
         for y in range(0,height,2):
@@ -70,6 +70,17 @@ def get_top_colors(imagePath):
     colors = top_colors(get_image(imagePath), 8, True)
     return colors
 
+def resize(path):
+    dirs = os.listdir( path )
+    for item in dirs:
+        im = Image.open(path+item)
+        if im.mode in ("RGBA", "P"):
+            im = im.convert("RGB")
+        f, e = os.path.splitext(path+item)
+        imResize = im.resize((200,200), Image.ANTIALIAS)
+        print(imResize)
+        imResize.save(f + '.jpg', 'JPEG', quality=90)
+
 def closest_color(requested_color):
     min_colors = {}
     for key, name in webcolors.css3_hex_to_names.items():
@@ -80,13 +91,25 @@ def closest_color(requested_color):
         min_colors[(rd + gd + bd)] = name
     return min_colors[min(min_colors.keys())]
 
-def warm_or_cool(r,g,b):
-    h, l, s = colorsys.rgb_to_hls(r/255, g/255, b/255)
-    hueAngle = h * 360
-    if (hueAngle > 90 and hueAngle < 270):
+def warm_or_cool(imagePath):
+    im = Image.open(imagePath)
+    im = im.resize((200, 200))
+    width, height = im.size
+    cool = 0
+    warm = 0
+    for x in range(0,width,2):
+        for y in range(0,height,2):
+            requestedPixel = im.getpixel((x,y))
+            h, l, s = colorsys.rgb_to_hls(requestedPixel[0]/255, requestedPixel[1]/255, requestedPixel[2]/255)
+            hueAngle = h * 360
+            if (hueAngle > 90 and hueAngle < 270):
+                cool += 1
+            else:
+                warm += 1
+    if cool > warm:
         return "cool"
     return "warm"
-    
+
 def getColorPercentage(imagePath, percentage):
     topPercentColors = []
     colorDict = weightedColors(imagePath)
@@ -101,7 +124,6 @@ def getColorPercentage(imagePath, percentage):
             currentPixelTotal += colors[1]
     return topPercentColors
     
-
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--imagePath', default='N/A')
@@ -111,4 +133,4 @@ if __name__ == '__main__':
     print(get_pallete_colors(args.imagePath)) 
     print(weightedColors(args.imagePath)) 
     print(getColorPercentage(args.imagePath, 50))
-    print(warm_or_cool(153,0,0))
+    print(warm_or_cool(args.imagePath))
