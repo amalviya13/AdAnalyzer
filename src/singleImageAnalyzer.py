@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
+import colorsys
 from collections import Counter
 from skimage.color import rgb2lab, deltaE_cie76
 import os
@@ -41,19 +42,6 @@ def top_colors(image, number_of_colors, show_chart):
 def weightedColors(imagePath):
     colorDict = {}
     im = Image.open(imagePath)
-    im = im.resize((400, 400))
-    width, height = im.size
-    for x in range(0,width,2):
-        for y in range(0,height,2):
-            close_color = closest_color(im.getpixel((x,y)))
-            if close_color in colorDict:
-                colorDict[close_color] = colorDict[close_color] + 1
-            else:
-                colorDict[close_color] = 1
-    return sorted(colorDict.items(), key=lambda x: x[1])
-
-def weightedColorsList(imagePath, colorDict):
-    im = Image.open(imagePath)
     im = im.resize((200, 200))
     width, height = im.size
     for x in range(0,width,2):
@@ -63,7 +51,7 @@ def weightedColorsList(imagePath, colorDict):
                 colorDict[close_color] = colorDict[close_color] + 1
             else:
                 colorDict[close_color] = 1
-    print(imagePath)
+    return sorted(colorDict.items(), key=lambda x: x[1])
 
 def get_pallete_colors(imagePath):
     color_thief = ColorThief(imagePath)
@@ -82,6 +70,17 @@ def get_top_colors(imagePath):
     colors = top_colors(get_image(imagePath), 8, True)
     return colors
 
+def resize(path):
+    dirs = os.listdir( path )
+    for item in dirs:
+        im = Image.open(path+item)
+        if im.mode in ("RGBA", "P"):
+            im = im.convert("RGB")
+        f, e = os.path.splitext(path+item)
+        imResize = im.resize((200,200), Image.ANTIALIAS)
+        print(imResize)
+        imResize.save(f + '.jpg', 'JPEG', quality=90)
+
 def closest_color(requested_color):
     min_colors = {}
     for key, name in webcolors.css3_hex_to_names.items():
@@ -92,26 +91,46 @@ def closest_color(requested_color):
         min_colors[(rd + gd + bd)] = name
     return min_colors[min(min_colors.keys())]
 
-def get_color_set(filePath):
-    allColors = {}
-    counter = 0
-    for filename in os.listdir(filePath):
-        if counter == 200:
-            break
-        counter = counter + 1
-        if filename.endswith(".jpg"): 
-            weightedColorsList(os.path.join(filePath, filename), allColors)
-        else:
-            continue
-    return(sorted(allColors.items(), key=lambda x: x[1]))
+def warm_or_cool(imagePath):
+    im = Image.open(imagePath)
+    im = im.resize((200, 200))
+    width, height = im.size
+    cool = 0
+    warm = 0
+    for x in range(0,width,2):
+        for y in range(0,height,2):
+            requestedPixel = im.getpixel((x,y))
+            h, l, s = colorsys.rgb_to_hls(requestedPixel[0]/255, requestedPixel[1]/255, requestedPixel[2]/255)
+            hueAngle = h * 360
+            if (hueAngle > 90 and hueAngle < 270):
+                cool += 1
+            else:
+                warm += 1
+    if cool > warm:
+        return "cool"
+    return "warm"
 
+def getColorPercentage(imagePath, percentage):
+    topPercentColors = []
+    colorDict = weightedColors(imagePath)
+    pixels = 0
+    for color in colorDict:
+        pixels += color[1]
+    pixels = pixels * (percentage/100)
+    currentPixelTotal = 0
+    for colors in reversed(colorDict):
+        if currentPixelTotal <= pixels:
+            topPercentColors.append(colors[0])
+            currentPixelTotal += colors[1]
+    return topPercentColors
+    
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--imagePath', default='N/A')
-    parser.add_argument('--filePath', default='N/A')
     args = parser.parse_args()
-    print(get_top_colors(args.imagePath)) #Answers for top colors change each iteration but also gives weightage
-    print(get_dominant_color(args.imagePath)) #Most dominant color
-    print(get_pallete_colors(args.imagePath)) #Returns top 8 colors - seems more accurate than get_top_colors
-    print(weightedColors(args.imagePath)) #Get how many times a pixel color appears in image - checks every 5 pixels to run faster
-    print(get_color_set(args.filePath))
+    print(get_top_colors(args.imagePath)) 
+    print(get_dominant_color(args.imagePath)) 
+    print(get_pallete_colors(args.imagePath)) 
+    print(weightedColors(args.imagePath)) 
+    print(getColorPercentage(args.imagePath, 50))
+    print(warm_or_cool(args.imagePath))
