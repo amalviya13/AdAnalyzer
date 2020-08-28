@@ -71,19 +71,17 @@ def get_top_colors(imagePath):
     return colors
 
 def resize(path):
-    dirs = os.listdir( path )
-    for item in dirs:
-        im = Image.open(path+item)
-        if im.mode in ("RGBA", "P"):
-            im = im.convert("RGB")
-        f, e = os.path.splitext(path+item)
-        imResize = im.resize((200,200), Image.ANTIALIAS)
-        print(imResize)
-        imResize.save(f + '.jpg', 'JPEG', quality=90)
+    im = Image.open(path)
+    if im.mode in ("RGBA", "P"):
+        im = im.convert("RGB")
+    f, e = os.path.splitext(path)
+    imResize = im.resize((200,200), Image.ANTIALIAS)
+    print(imResize)
+    imResize.save(f + '.jpg', 'JPEG', quality=90)
 
 def closest_color(requested_color):
     min_colors = {}
-    for key, name in webcolors.css3_hex_to_names.items():
+    for key, name in webcolors.css2_hex_to_names.items():
         r_c, g_c, b_c = webcolors.hex_to_rgb(key)
         rd = (r_c - requested_color[0]) ** 2
         gd = (g_c - requested_color[1]) ** 2
@@ -128,9 +126,10 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--imagePath', default='N/A')
     args = parser.parse_args()
+    # resize(args.imagePath)
     print(get_top_colors(args.imagePath)) 
     print(get_dominant_color(args.imagePath)) 
     print(get_pallete_colors(args.imagePath)) 
     print(weightedColors(args.imagePath)) 
-    print(getColorPercentage(args.imagePath, 50))
+    print(getColorPercentage(args.imagePath, 80))
     print(warm_or_cool(args.imagePath))
