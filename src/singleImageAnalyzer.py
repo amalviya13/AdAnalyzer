@@ -5,7 +5,6 @@ import numpy as np
 import cv2
 import colorsys
 from collections import Counter
-from skimage.color import rgb2lab, deltaE_cie76
 import os
 from colorthief import ColorThief
 from matplotlib.colors import rgb2hex
@@ -51,6 +50,7 @@ def weightedColors(imagePath):
                 colorDict[close_color] = colorDict[close_color] + 1
             else:
                 colorDict[close_color] = 1
+    visualizeResults(colorDict)
     return sorted(colorDict.items(), key=lambda x: x[1])
 
 def get_pallete_colors(imagePath):
@@ -81,7 +81,7 @@ def resize(path):
 
 def closest_color(requested_color):
     min_colors = {}
-    for key, name in webcolors.css2_hex_to_names.items():
+    for key, name in webcolors.CSS2_HEX_TO_NAMES.items():
         r_c, g_c, b_c = webcolors.hex_to_rgb(key)
         rd = (r_c - requested_color[0]) ** 2
         gd = (g_c - requested_color[1]) ** 2
@@ -121,6 +121,11 @@ def getColorPercentage(imagePath, percentage):
             topPercentColors.append(colors[0])
             currentPixelTotal += colors[1]
     return topPercentColors
+
+def visualizeResults(colorDict):
+	plt.figure(figsize = (8, 6))
+	plt.pie(colorDict.values(), labels = colorDict.keys(), colors = colorDict.keys())
+	plt.show()
     
 if __name__ == '__main__':
     parser = ArgumentParser()

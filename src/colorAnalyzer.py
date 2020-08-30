@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 from collections import Counter
-from skimage.color import rgb2lab, deltaE_cie76
 import os
 from colorthief import ColorThief
 from matplotlib.colors import rgb2hex
@@ -84,7 +83,7 @@ def get_top_colors(imagePath):
 
 def closest_color(requested_color):
     min_colors = {}
-    for key, name in webcolors.css3_hex_to_names.items():
+    for key, name in webcolors.CSS3_hex_to_names.items():
         r_c, g_c, b_c = webcolors.hex_to_rgb(key)
         rd = (r_c - requested_color[0]) ** 2
         gd = (g_c - requested_color[1]) ** 2
