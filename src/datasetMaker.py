@@ -13,6 +13,6 @@ def makeFakeDataset(filePath):
 
 if __name__ == '__main__':
 	parser = ArgumentParser()
-    parser.add_argument('--directoryPath', default='N/A')
-    args = parser.parse_args()
+	parser.add_argument('--directoryPath', default='N/A')
+	args = parser.parse_args()
 	makeFakeDataset(args.directoryPath)
