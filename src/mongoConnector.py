@@ -8,7 +8,6 @@ def makeConnection():
     dbname = "sample_training"
     mydb = client[dbname]
 
-    #list the collections
     for coll in mydb.list_collection_names():
         print(coll)
 
