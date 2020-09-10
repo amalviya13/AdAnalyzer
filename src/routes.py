@@ -23,7 +23,6 @@ from mongoConnector import *
 app = flask.Flask(__name__)
 app.config["DEBUG"] =    True
 
-
 @app.route('/image/upload', methods=['POST'])
 def uploadImage():
     getCSVData()
