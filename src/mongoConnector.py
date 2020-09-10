@@ -1,14 +1,21 @@
 from pymongo import MongoClient
+import pymongo
 import json
+from flask import Flask 
+from flask_cors import CORS 
 
-def makeConnection():
-    client = MongoClient()
-    client = MongoClient('localhost', 27017)    
 
-    dbname = "sample_training"
-    mydb = client[dbname]
+connection_url = "mongodb+srv://admin:coloranalyzerboissquad123yeet@cluster0.vcfdv.mongodb.net/test?retryWrites=true&w=majority"
 
-    for coll in mydb.list_collection_names():
-        print(coll)
+app = Flask(__name__) 
+client = pymongo.MongoClient(connection_url) 
 
-makeConnection()
+companiesDB = client["companies"]
+print(companiesDB.list_collection_names())
+# Database 
+Database = client.get_database('companies') 
+# Table 
+SampleTable = Database.SampleTable 
+  
+if __name__ == '__main__': 
+    app.run(debug=True) 

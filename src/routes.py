@@ -21,12 +21,11 @@ from singleImageAnalyzer import get_dominant_color as image_dominant_color, getC
 from mongoConnector import *
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
-
+app.config["DEBUG"] =    True
 
 @app.route('/image/upload', methods=['POST'])
 def uploadImage():
-
+    getCSVData()
     return "Testing API"
 
 @app.route('/image/resize', methods=['POST'])
