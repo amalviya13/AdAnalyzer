@@ -64,7 +64,6 @@ def get_color_set(csvPath):
     fileDict = getCSVData(csvPath)
     for key, value in fileDict.items():
         weightedColorsList(key, value, allColors)
-    visualizeResults(allColors)
     return(sorted(allColors.items(), key=lambda x: x[1]))
 
 def visualizeResults(colorDict):
