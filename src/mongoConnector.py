@@ -11,7 +11,6 @@ connection_url = "mongodb+srv://admin:coloranalyzerboissquad123yeet@cluster0.vcf
 app = Flask(__name__) 
 client = pymongo.MongoClient(connection_url) 
 companiesDB = client["companies"]
-collectionNike = companiesDB['nike']
 
 @app.route('/image/upload', methods=['POST'])
 def uploadImage():
@@ -28,11 +27,16 @@ def uploadImageSet():
     data = json.loads(request.data)
     fileDict = getCSVData(data['route'])
     counter = 0
+    myObj = []
     for key, value in fileDict.items():  
+        if counter == 123:
+            break
         warm_cool = warm_or_cool(key)
         top_color = weightedColors(key)
-        companiesDB.nike.insert_one({'image_route' : key, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : value})
         counter = counter + 1
+        myObj.append({'image_route' : key, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : value})
+
+    companiesDB.nike.insert_many(myObj)
 
     color_set = get_color_set(data['route'])
     status = companiesDB.nike.insert_one({'set_route' : route, 'color_set' : color_set, 'num_images' : counter})
