@@ -23,39 +23,77 @@ from mongoConnector import *
 app = flask.Flask(__name__)
 app.config["DEBUG"] =    True
 
+#Upload new image   
 @app.route('/image/upload', methods=['POST'])
-def uploadImage():
-    getCSVData()
-    return "Testing API"
+def newImage():
+    data = json.loads(request.data)
+    route = data['route']
+    ctr = data['ctr']
+    setName = data['set']
+    warm_cool = warm_or_cool(data['route'])
+    top_color = weightedColors(data['route'])
+    obj = []
+    obj.append({'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr})
+    status = companiesDB.nike.insert_one({'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr})
+    return "Uploaded Image"
 
-@app.route('/image/resize', methods=['POST'])
-def resizeImage():
-    return "Testing API"
+#Upload new image set 
+@app.route('/image/set/upload', methods=['POST'])
+def newImageSet():
+    data = json.loads(request.data)
+    fileDict = getCSVData(data['route'])
+    setName = data['set']
+    counter = 0
+    myObj = []
+    for key, value in fileDict.items():  
+        warm_cool = warm_or_cool(key)
+        top_color = weightedColors(key)
+        myObj.append({'image_route' : key, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : value})
 
-@app.route('/image/calculate', methods=['POST'])
-def calculateImage():
-    return "Testing API"
+    companiesDB.nike.insert_many(myObj)
 
-@app.route('/image/dominant', methods=['GET'])
-def dominantImage():
-    print(request.args.get('imageID'))
-    response = image_dominant_color('/Users/arnavmalviya/Desktop/bladerunner.jpg')
-    return response
+    color_set = get_color_set(data['route'])
+    obj = []
+    obj.append({'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
+    status = companiesDB.nike.insert_one({'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
+    return "Uploaded Set"
 
-@app.route('/image/pallette/{numPallete}', methods=['GET'])
-def palletteImage():
-    return "Testing API"
+#Adding a new set to existing set
+@app.route('/image/set/add', methods=['POST'])
+def updateImageSet():
+    data = json.loads(request.data)
+    setName = data['set']
+    route = data['route']
+    #get array data for this set 
+    #send array data and new csv to python function
 
-@app.route('/image/weighted', methods=['GET'])
-def weightedImage():
-    return "Testing API"
+#Add new image to a set
+@app.route('/image/add', methods=['POST'])
+def addImageToSet():
+    data = json.loads(request.data)
+    setName = data['set']
+    route = data['route']
+    #get array data for this set
+    #send array data and route of image to python function
 
-@app.route('/image/percentage/{percentage}', methods=['GET'])
-def percentageImage():
-    return "Testing API"
+#Delete a set and all corresponding images
+@app.route('/image/set/delete', methods=['DELETE'])
+def deleteImageSet():
+    data = json.loads(request.data)
+    setName = data['set']
+    obj = []
+    obj.append({'set' : setName})
+    status = companiesDB.nike.delete_many({'set' : setName})
+    return "Deleted Set"
 
-@app.route('/image/warmcool', methods=['GET'])
-def warmcoolImage():
-    return "Testing API"
+#Delete an image 
+@app.route('/image/delete', methods=['DELETE'])
+def deleteImage():
+    data = json.loads(request.data)
+    obj = []
+    obj.append({'image_route' : data['route']})
+    companiesDB.nike.delete_one({'image_route' : data['route']})
+    return "Deleted Image"
 
-app.run()
+if __name__ == '__main__': 
+    app.run(debug=True) 
