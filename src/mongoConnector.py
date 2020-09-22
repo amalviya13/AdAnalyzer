@@ -21,6 +21,8 @@ def newImage():
     setName = data['set']
     warm_cool = warm_or_cool(data['route'])
     top_color = weightedColors(data['route'])
+    obj = []
+    obj.append({'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr})
     status = companiesDB.nike.insert_one({'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr})
     return "Uploaded Image"
 
@@ -40,25 +42,36 @@ def newImageSet():
     companiesDB.nike.insert_many(myObj)
 
     color_set = get_color_set(data['route'])
+    obj = []
+    obj.append({'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
     status = companiesDB.nike.insert_one({'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
     return "Uploaded Set"
 
-# #Adding a new set to existing set
-# @app.route('/image/set/add', methods=['POST'])
-# def updateImageSet():
+#Adding a new set to existing set
+@app.route('/image/set/add', methods=['POST'])
+def updateImageSet():
+    data = json.loads(request.data)
+    setName = data['set']
+    route = data['route']
+    #get array data for this set 
+    #send array data and new csv to python function
 
-# #Add new image to a set
-# @app.route('/image/add', methods=['POST'])
-# def addImageToSet():
+#Add new image to a set
+@app.route('/image/add', methods=['POST'])
+def addImageToSet():
+    data = json.loads(request.data)
+    setName = data['set']
+    route = data['route']
+    #get array data for this set
+    #send array data and route of image to python function
 
 #Delete a set and all corresponding images
 @app.route('/image/set/delete', methods=['DELETE'])
 def deleteImageSet():
     data = json.loads(request.data)
     setName = data['set']
-
-    # for key, value in fileDict.items():  
-    #     companiesDB.nike.delete_one({'image_route' : key})
+    obj = []
+    obj.append({'set' : setName})
     status = companiesDB.nike.delete_many({'set' : setName})
     return "Deleted Set"
 
@@ -66,6 +79,8 @@ def deleteImageSet():
 @app.route('/image/delete', methods=['DELETE'])
 def deleteImage():
     data = json.loads(request.data)
+    obj = []
+    obj.append({'image_route' : data['route']})
     companiesDB.nike.delete_one({'image_route' : data['route']})
     return "Deleted Image"
 
