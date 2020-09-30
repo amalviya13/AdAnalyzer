@@ -22,3 +22,17 @@ Delete an image - Delete Image
 Get image - Get Image
 Get image set calculations - Get Set Calculation
 Get all images from set - Get Set Routes
+
+ALL COLLECTIONS PAGE
+- Search Bar
+- Filtering
+- Grid showing all collections 
+ - Each box should show title of collection and # photos
+- Button to add collection
+
+SPECIFIC COLLECTION PAGE
+- Search Bar
+- Filtering
+- List/Grid view of images which shows a preview and image name
+- Button for deleting collection
+- Button for adding an image 
