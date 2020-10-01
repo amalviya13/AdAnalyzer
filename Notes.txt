@@ -1,5 +1,5 @@
 Notes
-
+OCTOBER 17TH 2 PAGES DONE
 ALL COLLECTIONS PAGE - Arnav
 - Search Bar
 - Grid showing all collections 
@@ -11,3 +11,6 @@ SPECIFIC COLLECTION PAGE - Anjan
 - List/Grid view of images which shows a preview and image name
 - Button for deleting collection
 - Button for adding an image 
+
+HOW TO SHOW DATA
+- Pie Chart (Take array take top 10 colors?)
