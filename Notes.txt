@@ -14,3 +14,4 @@ SPECIFIC COLLECTION PAGE - Anjan
 
 HOW TO SHOW DATA
 - Pie Chart (Take array take top 10 colors?)
+- Bar Graph showing different ctr's between collections
