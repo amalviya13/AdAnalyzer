@@ -15,3 +15,4 @@ SPECIFIC COLLECTION PAGE - Anjan
 HOW TO SHOW DATA
 - Pie Chart (Take array take top 10 colors?)
 - Bar Graph showing different ctr's between collections
+- Percentage of Warm/Cool images in dataset in the form of a cirlce percentage thingy
