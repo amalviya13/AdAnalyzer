@@ -10,7 +10,7 @@ def dbCompanyUpdate(company, obj):
     companyCollection = getCompanyCollection("companies", company)
     companyCollection.update(obj)
 
-def dbCompanyDeleteSingle(company, obj):
+def dbCompanyDeleteOne(company, obj):
     companyCollection = getCompanyCollection("companies", company)
     companyCollection.delete_one(obj)
 
@@ -19,16 +19,16 @@ def dbCompanyDeleteMany(company, obj):
     companyCollection.delete_one(obj)
 
 def dbCompanyInsertOne(company, obj):
-    companyCollection = getCollection("companies", company)
+    companyCollection = getCompanyCollection("companies", company)
     companyCollection.insert_one(obj)
 
 def dbCompanyInsertMany(company, obj):
-    companyCollection = getCollection("companies", company)
+    companyCollection = getCompanyCollection("companies", company)
     companyCollection.insert_many(obj)
 
 def dbCompanyGet(company, obj):
-    companyCollection = getCollection("companies", obj)
-    companyCollection.find(obj)
+    companyCollection = getCompanyCollection("companies", obj)
+    return companyCollection.find(obj)
 
 
 def getCompanyCollection(collectionName, company):

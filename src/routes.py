@@ -13,15 +13,22 @@
 # GET /set/dominant - Dominant color overall
 # GET /set/colorset - Gets all colors in image with # appearances
 # GET /set/unique - Average number of unique colors
-
-import flask
-from flask import request
-from imageSetAnalyzer import *
-from singleImageAnalyzer import get_dominant_color as image_dominant_color, getColorPercentage as get_image_percentage
 from mongoConnector import *
+import json
+from flask import request
+from flask import Flask 
+from flask_cors import CORS 
+from singleImageAnalyzer import *
+from imageSetAnalyzer import *
 
-app = flask.Flask(__name__)
-app.config["DEBUG"] =    True
+# connection_url = "mongodb+srv://admin:coloranalyzerboissquad123yeet@cluster0.vcfdv.mongodb.net/test?retryWrites=true&w=majority"
+app = Flask(__name__) 
+# client = pymongo.MongoClient(connection_url) 
+# companiesDB = client["companies"]
+
+@app.route('/image/upload', methods=['GET'])
+def testImage():
+    return "Uploaded Image"
 
 #Upload new image   
 @app.route('/image/upload', methods=['POST'])
@@ -32,9 +39,9 @@ def newImage():
     setName = data['set']
     warm_cool = warm_or_cool(data['route'])
     top_color = weightedColors(data['route'])
-    obj = []
-    obj.append({'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr})
-    status = companiesDB.nike.insert_one({'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr})
+    obj = {'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr}
+    status = dbCompanyInsertOne("nike", obj)
+    # status = companiesDB.nike.insert_one({'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr})
     return "Uploaded Image"
 
 #Upload new image set 
@@ -50,12 +57,13 @@ def newImageSet():
         top_color = weightedColors(key)
         myObj.append({'image_route' : key, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : value})
 
-    companiesDB.nike.insert_many(myObj)
+    dbCompanyInsertMany("nike", myObj)
+    # companiesDB.nike.insert_many(myObj)
 
     color_set = get_color_set(data['route'])
-    obj = []
-    obj.append({'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
-    status = companiesDB.nike.insert_one({'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
+    obj = {'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter}
+    # status = companiesDB.nike.insert_one({'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
+    status = dbCompanyInsertOne("nike", obj)
     return "Uploaded Set"
 
 #Adding a new set to existing set
@@ -81,18 +89,19 @@ def addImageToSet():
 def deleteImageSet():
     data = json.loads(request.data)
     setName = data['set']
-    obj = []
-    obj.append({'set' : setName})
-    status = companiesDB.nike.delete_many({'set' : setName})
+    obj = {'set' : setName}
+    dbCompanyDeleteMany("nike", obj);
+    # status = companiesDB.nike.delete_many({'set' : setName})
+    dbCompanyDelete_
     return "Deleted Set"
 
 #Delete an image 
 @app.route('/image/delete', methods=['DELETE'])
 def deleteImage():
     data = json.loads(request.data)
-    obj = []
-    obj.append({'image_route' : data['route']})
-    companiesDB.nike.delete_one({'image_route' : data['route']})
+    obj = {'image_route' : data['route']}
+    dbCompanyDeleteOne("nike", obj)
+    #companiesDB.nike.delete_one({'image_route' : data['route']})
     return "Deleted Image"
 
 if __name__ == '__main__': 
