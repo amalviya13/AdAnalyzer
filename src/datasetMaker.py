@@ -5,7 +5,7 @@ import random
 
 
 def makeFakeDataset(filePath):
-	with open('adDataset.csv', 'w', newline='') as csvFile:
+	with open('doomDataset.csv', 'w', newline='') as csvFile:
 		writer = csv.writer(csvFile)
 		writer.writerow(["FileName", "CTR"])
 		for filename in os.listdir(filePath):
