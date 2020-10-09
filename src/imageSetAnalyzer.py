@@ -32,6 +32,7 @@ def resize(path):
         imResize = im.resize((200,200), Image.ANTIALIAS)
         print(imResize)
         imResize.save(f + '.jpg', 'JPEG', quality=90)
+        os.remove(path+item)
 
 def get_dominant_colors(filePath):
     colorDict = {}
@@ -130,8 +131,6 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('--filePath', default='N/A')
     args = parser.parse_args()
-    #print(get_dominant_colors(args.filePath))
-    print(get_color_set(args.filePath))
-    #print(averageUniqueColors(args.filePath))
-    #resize(args.filePath)
+    resize(args.filePath)
+
 
