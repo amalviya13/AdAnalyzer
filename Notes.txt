@@ -16,3 +16,20 @@ HOW TO SHOW DATA
 - Pie Chart (Take array take top 10 colors?)
 - Bar Graph showing different ctr's between collections
 - Percentage of Warm/Cool images in dataset in the form of a cirlce percentage thingy
+
+POST CALLS - Both require recalculation of set array
+- New Image
+- New Set
+
+GET CALLS
+- Get Image
+- Get All Images
+- Get All Set Names
+- Get Set
+- Get Data of Image
+- Get Data of Set
+
+DELETE CALLS
+- Delete Image
+  - Requires recalculation of set array
+- Delete Set
