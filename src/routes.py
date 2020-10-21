@@ -20,59 +20,65 @@ from flask import Flask
 from flask_cors import CORS 
 from singleImageAnalyzer import *
 from imageSetAnalyzer import *
+from flask import jsonify
 
 app = Flask(__name__) 
 
 #Get specific image from collection
-@app.route('/image/<company>/<collection>/<imageName>', methods=['GET'])
-def getImage(company, collection, imageName):
+#@app.route('/image/<company>/<collection>/<imageName>', methods=['GET'])
+@app.route('/image', methods=['GET'])
+def getImage():
     company = request.args.get('company')
-    collection = request.args.get('collection')
+    setName = request.args.get('set')
     imageName = request.args.get('imageName')
-    obj = {'company' : company, 'set' : collection, 'image_route' : imageName}
-    return "Specific Image"
+    obj = {'set' : setName, 'image_route' : imageName}
+    img = dbGetImage(company, obj)
+    return "got image"
 
-#Get all collections of a company
-@app.route('/collections/<company>', methods=['GET'])
-def getCollections(company):
+#Get the names of all the sets of a company
+@app.route('/collections', methods=['GET'])
+def getCollections():
     company = request.args.get('company')
-    obj = {'company' : company}
-    return "Collections"
+    companySetNames = dbGetAllCompanySetNames(company)
+    return jsonify(companyCollection)
 
 #Get all images of a collection
-@app.route('/collection/images/<company>/<collection>', methods=['GET'])
-def getCollection():
+@app.route('/collection/images/', methods=['GET'])
+def getSet():
     company = request.args.get('company')
-    collection = request.args.get('collection')
-    obj = {'company' : company, 'set' : collection}
+    setName = request.args.get('set')
+    obj = {'set' : setName}
+    companySet = dbGetCompanySet(company, obj)
+    print(companySet)
     return "Images in Collection"
 
 #Get array data of a collection
-@app.route('/collections/array/<company>/<collection>', methods=['GET'])
+@app.route('/collection/array/', methods=['GET'])
 def getCollectionArray():
     company = request.args.get('company')
-    collection = request.args.get('collection')
-    obj = {'company' : company, 'set' : collection}
+    setName = request.args.get('set')
+    obj = {'type': 'collectionArray', 'set' : setName}
+    setArr = dbGetCompanySetArray(company, obj)
     return "Collection Array"
 
 #Get array data of an image in collection
-@app.route('/image/array/<company>/<collection>/<imageName>', methods=['GET'])
+@app.route('/image/array/', methods=['GET'])
 def getImageArray():
     company = request.args.get('company')
-    collection = request.args.get('collection')
+    setName = request.args.get('set')
     imageName = request.args.get('imageName')
-    obj = {'company' : company, 'set' : collection, 'image_route' : imageName}
+    obj = {'set' : setName, 'image_route' : imageName}
+    imgArray = dbGetImageArray(company, obj)
     return "Image Array"
 
 #Upload new image   
 #Needs to be changed so now it will get data array data of its set and recalculate it
 @app.route('/image/upload', methods=['POST'])
 def newImage():
-    data = json.loads(request.data)
-    company = data['company']
-    route = data['route']
-    ctr = data['ctr']
-    setName = data['set']
+    company = request.args.get('company')
+    setName = request.args.get('set')
+    route = request.args.get('route')
+    ctr = request.args.get('ctr')
     warm_cool = warm_or_cool(data['route'])
     top_color = weightedColors(data['route'])
     obj = {'image_route' : route, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : ctr}
@@ -82,10 +88,10 @@ def newImage():
 #Upload new image set 
 @app.route('/image/set/upload', methods=['POST'])
 def newImageSet():
-    data = json.loads(request.data)
-    fileDict = getCSVData(data['route'])
-    setName = data['set']
-    company = data['company']
+    company = request.args.get('company')
+    setName = request.args.get('set')
+    route = request.args.get('route')
+    fileDict = getCSVData(route)
     counter = 0
     myObj = []
     for key, value in fileDict.items():  
@@ -103,7 +109,7 @@ def newImageSet():
     obj = []
     obj.append({'set_route' : data['route'], 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
     print(obj)
-    status = dbCompanyInsertMany("nike", obj)
+    status = dbCompanyInsertMany("nike", obj)  #change such that it updates separate collection rather than same collection
     return "Uploaded Set"
 
 # #Adding a new set to existing set
@@ -118,22 +124,21 @@ def newImageSet():
 #Delete a set and all corresponding images
 @app.route('/image/set/delete', methods=['DELETE'])
 def deleteImageSet():
-    data = json.loads(request.data)
-    setName = data['set']
-    company = data['company']
+    company = request.args.get('company')
+    setName = request.args.get('set')
     obj = {'set' : setName}
     dbCompanyDeleteMany(company, obj);
-    dbCompanyDelete_
     return "Deleted Set"
 
 #Delete an image 
 @app.route('/image/delete', methods=['DELETE'])
 def deleteImage():
-    data = json.loads(request.data)
-    company = data['company']
-    obj = {'image_route' : data['route']}
-    dbCompanyDeleteOne(company, obj)
-    return "Deleted Image"
+	company = request.args.get('company')
+	setName = request.args.get('set')
+	image_route = request.args.get('route')
+	obj = {'set': setName, 'image_route': image_route}
+	dbCompanyDeleteOne(company, obj)
+	return "Deleted Image"
 
 if __name__ == '__main__': 
     app.run(debug=True) 
