@@ -33,14 +33,16 @@ def getImage():
     imageName = request.args.get('imageName')
     obj = {'set' : setName, 'image_route' : imageName}
     img = dbGetImage(company, obj)
-    return "got image"
+    #Sends back route to image - your computer will search for that image and pull it out
+    #In the end it will return link to s3 image
+    return img["image_route"]
 
 #Get the names of all the sets of a company
 @app.route('/collections', methods=['GET'])
 def getCollections():
     company = request.args.get('company')
     companySetNames = dbGetAllCompanySetNames(company)
-    return jsonify(companyCollection)
+    return jsonify(companySetNames)
 
 #Get all images of a collection
 @app.route('/collection/images/', methods=['GET'])
@@ -49,17 +51,22 @@ def getSet():
     setName = request.args.get('set')
     obj = {'set' : setName}
     companySet = dbGetCompanySet(company, obj)
-    print(companySet)
-    return "Images in Collection"
+    imageList = []
+    for image in companySet:
+        print(image)
+        if ("image_route" in image):
+            imageList.append(image["image_route"])
+    return jsonify(imageList)
 
+#######
 #Get array data of a collection
 @app.route('/collection/array/', methods=['GET'])
 def getCollectionArray():
     company = request.args.get('company')
     setName = request.args.get('set')
-    obj = {'type': 'collectionArray', 'set' : setName}
-    setArr = dbGetCompanySetArray(company, obj)
-    return "Collection Array"
+    obj = {'company': company, 'set' : setName}
+    setArr = dbGetCompanySetArray("company_set_data", obj)
+    return str(setArr)
 
 #Get array data of an image in collection
 @app.route('/image/array/', methods=['GET'])
@@ -68,8 +75,11 @@ def getImageArray():
     setName = request.args.get('set')
     imageName = request.args.get('imageName')
     obj = {'set' : setName, 'image_route' : imageName}
+    colorDict = {}
     imgArray = dbGetImageArray(company, obj)
-    return "Image Array"
+    for img in imgArray:
+        colorDict[img[0]] = img[1]
+    return colorDict
 
 #Upload new image   
 #Needs to be changed so now it will get data array data of its set and recalculate it
@@ -107,9 +117,9 @@ def newImageSet():
 
     color_set = get_color_set(data['route'])
     obj = []
-    obj.append({'set_route' : data['route'], 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
+    obj.append({'company' : company, 'set_route' : data['route'], 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
     print(obj)
-    status = dbCompanyInsertMany("nike", obj)  #change such that it updates separate collection rather than same collection
+    status = dbCompanyInsertMany("company_set_data", obj)  #change such that it updates separate collection rather than same collection
     return "Uploaded Set"
 
 # #Adding a new set to existing set
@@ -127,8 +137,8 @@ def deleteImageSet():
     company = request.args.get('company')
     setName = request.args.get('set')
     obj = {'set' : setName}
-    dbCompanyDeleteMany(company, obj);
-    return "Deleted Set"
+    deleteImagesCount = dbCompanyDeleteMany(company, obj)
+    return str(deleteImagesCount)
 
 #Delete an image 
 @app.route('/image/delete', methods=['DELETE'])
@@ -137,8 +147,8 @@ def deleteImage():
 	setName = request.args.get('set')
 	image_route = request.args.get('route')
 	obj = {'set': setName, 'image_route': image_route}
-	dbCompanyDeleteOne(company, obj)
-	return "Deleted Image"
+	deleteCount = dbCompanyDeleteOne(company, obj)
+	return str(deleteCount)
 
 if __name__ == '__main__': 
     app.run(debug=True) 

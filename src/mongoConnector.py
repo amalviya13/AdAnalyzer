@@ -17,11 +17,11 @@ def dbCompanyUpdateMany(company, objToUpdate, newValues):
 
 def dbCompanyDeleteOne(company, obj):
     companyCollection = dbGetCompanyCollection(company)
-    print(companyCollection.delete_one(obj).deleted_count)
+    return companyCollection.delete_one(obj).deleted_count
 
 def dbCompanyDeleteMany(company, obj):
     companyCollection = dbGetCompanyCollection(company)
-    companyCollection.delete_many(obj) # should add line to ensure set info is deleted from new dataset Collection
+    return companyCollection.delete_many(obj).deleted_count # should add line to ensure set info is deleted from new dataset Collection
 
 def dbCompanyInsertOne(company, obj):
     companyCollection = dbGetCompanyCollection(company)
@@ -34,10 +34,11 @@ def dbCompanyInsertMany(company, obj):
 # Get a specific company collection
 # Returns the entire collection (specifically the collection object) of a company
 def dbGetCompanyCollection(companyName): #add obj
-	db = client['companies']
-	companyCollection = db[companyName]
-	# return companyCollection.find({}) # return iterable list of all documents within collection
-	return companyCollection
+    print(type(companyName), "   " , companyName)
+    db = client['companies']
+    companyCollection = db[companyName]
+    # return companyCollection.find({}) # return iterable list of all documents within collection
+    return companyCollection
 
 # returns list of all documents corresponding of the respective set
 def dbGetCompanySet(companyName, obj):
