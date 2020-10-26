@@ -115,9 +115,9 @@ def newImageSet():
 
     dbCompanyInsertMany(company, myObj)
 
-    color_set = get_color_set(data['route'])
+    color_set = get_color_set(route)
     obj = []
-    obj.append({'company' : company, 'set_route' : data['route'], 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
+    obj.append({'company' : company, 'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
     print(obj)
     status = dbCompanyInsertMany("company_set_data", obj)  #change such that it updates separate collection rather than same collection
     return "Uploaded Set"
