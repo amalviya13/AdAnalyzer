@@ -21,8 +21,26 @@ from flask_cors import CORS
 from singleImageAnalyzer import *
 from imageSetAnalyzer import *
 from flask import jsonify
+from flask_cors import CORS
+
+config = {
+  'ORIGINS': [
+    'http://localhost:3000',  # React
+    'http://127.0.0.1:8080',  # React
+  ],
+
+  'SECRET_KEY': '...'
+}
 
 app = Flask(__name__) 
+
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  response.headers.add('Access-Control-Allow-Credentials', 'true')
+  return response
 
 #Get specific image from collection
 #@app.route('/image/<company>/<collection>/<imageName>', methods=['GET'])
