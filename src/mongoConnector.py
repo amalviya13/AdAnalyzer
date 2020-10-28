@@ -48,8 +48,8 @@ def dbGetCompanySet(companyName, obj):
 # Get all the names of all sets within a company
 # returns an array of all the set nams
 def dbGetAllCompanySetNames(companyName):
-    companyCollection = dbGetCompanyCollection(companyName)
-    return companyCollection.distinct('set')
+    companyCollection = dbGetCompanyCollection('company_set_data')
+    return companyCollection.find({'company': companyName}, {'_id': 0, 'set':1, 'num_images': 1})
 
 # Gets the entire document of a specific image (returns all data of the given image)
 def dbGetImage(companyName, obj):
@@ -65,9 +65,9 @@ def dbGetImageArray(companyName, obj):
 
 # Get the data document for a specific image set
 # Currently retrieves document from within company Collection, but will likely get from separate collection in future update
-def dbGetCompanySetArray(companyName, obj):
-    companyCollection = dbGetCompanyCollection(companyName)
-    setData = companyCollection.find_one({'type': obj['type'],'set': obj['set']})
+def dbGetCompanySetArray(obj):
+    companyCollection = dbGetCompanyCollection('company_set_data')
+    setData = companyCollection.find_one(obj, {'_id': 0})
     return setData
 
 

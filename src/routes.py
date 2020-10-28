@@ -60,7 +60,7 @@ def getImage():
 def getCollections():
     company = request.args.get('company')
     companySetNames = dbGetAllCompanySetNames(company)
-    return jsonify(companySetNames)
+    return jsonify(list(companySetNames))
 
 #Get all images of a collection
 @app.route('/collection/images/', methods=['GET'])
@@ -83,8 +83,8 @@ def getCollectionArray():
     company = request.args.get('company')
     setName = request.args.get('set')
     obj = {'company': company, 'set' : setName}
-    setArr = dbGetCompanySetArray("company_set_data", obj)
-    return str(setArr)
+    setArr = dbGetCompanySetArray(obj)
+    return jsonify(setArr)
 
 #Get array data of an image in collection
 @app.route('/image/array/', methods=['GET'])
@@ -124,7 +124,7 @@ def newImageSet():
     myObj = []
     for key, value in fileDict.items():  
         print(key)
-        if(counter == 25):
+        if(counter == 23):
             break
         counter = counter + 1
         warm_cool = warm_or_cool(key)
