@@ -45,7 +45,6 @@ const ProductCard = ({ className, product, ...rest }) => {
         >
           <Avatar
             alt="Product"
-            src={product}
             variant="square"
           />
         </Box>
@@ -55,7 +54,7 @@ const ProductCard = ({ className, product, ...rest }) => {
           gutterBottom
           variant="h4"
         >
-          {product}
+          {product.set}
         </Typography>
       </CardContent>
       <Box flexGrow={1} />
@@ -74,13 +73,17 @@ const ProductCard = ({ className, product, ...rest }) => {
             <Button color="textSecondary"
               display="inline"
               variant="body2" 
-              component={Link} to="/app/customers">
+              component={Link} to=
+                {{
+                  pathname: "/app/customers",
+                  data: product
+                }}>
                 <Typography
                   color="textSecondary"
                   display="inline"
                   variant="body2"
                 >
-                  {"100"}
+                  {product.num_images}
                   {' '}
                   Images
                 </Typography>
