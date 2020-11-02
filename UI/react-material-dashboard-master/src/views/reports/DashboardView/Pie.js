@@ -5,14 +5,22 @@ import {
   Grid,
   makeStyles
 } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
 import Page from 'src/components/Page';
+import Paper from '@material-ui/core/Paper';
+import {
+  Chart,
+  PieSeries,
+  Title,
+} from '@devexpress/dx-react-chart-material-ui';
+import { Animation } from '@devexpress/dx-react-chart';
+
 
 class Pie extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sets: []
+      sets: [],
+      data: []
     };
   }
 
@@ -21,9 +29,8 @@ class Pie extends React.Component {
       .then(res => res.json())
       .then(
         (result) => {
-          console.log(result)
           this.setState({
-            sets: result[0]
+            sets: result
           });
         },
         (error) => {
@@ -35,18 +42,34 @@ class Pie extends React.Component {
   }
 
   render() {
+    console.log(this.state.sets)
+    const { data: chartData } = this.state.data;
     return (
-      <Page title="Sets">
-        <Container maxWidth={false}>
-          <Box mt={3}>
-            <Grid
-              container
-              spacing={3}
-            >
-            </Grid>
-          </Box>
-        </Container>
-      </Page>
+      // <Page title="Sets">
+      //   <Container maxWidth={false}>
+      //     <Box mt={3}>
+      //       <Grid
+      //         container
+      //         spacing={3}
+      //       >
+      //       </Grid>
+      //     </Box>
+      //   </Container>
+      // </Page>
+      <Paper>
+        <Chart
+          data={this.state.sets}
+        >
+          <PieSeries
+            valueField="area"
+            argumentField="country"
+          />
+          <Title
+            text="Colors"
+          />
+          <Animation />
+        </Chart>
+      </Paper>
     )
   }
 

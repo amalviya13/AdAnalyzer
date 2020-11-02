@@ -84,7 +84,11 @@ def getCollectionArray():
     setName = request.args.get('set')
     obj = {'company': company, 'set' : setName}
     setArr = dbGetCompanySetArray(obj)
-    return jsonify(setArr)
+    print(setArr['color_set'])
+    colorDict = {}
+    for color in setArr['color_set']:
+        colorDict[color[0]] = color[1]
+    return colorDict
 
 #Get array data of an image in collection
 @app.route('/image/array/', methods=['GET'])
