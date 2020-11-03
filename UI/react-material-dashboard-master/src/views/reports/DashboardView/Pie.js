@@ -45,31 +45,19 @@ class Pie extends React.Component {
     console.log(this.state.sets)
     const { data: chartData } = this.state.data;
     return (
-      // <Page title="Sets">
-      //   <Container maxWidth={false}>
-      //     <Box mt={3}>
-      //       <Grid
-      //         container
-      //         spacing={3}
-      //       >
-      //       </Grid>
-      //     </Box>
-      //   </Container>
-      // </Page>
-      <Paper>
-        <Chart
-          data={this.state.sets}
-        >
-          <PieSeries
-            valueField="area"
-            argumentField="country"
-          />
-          <Title
-            text="Colors"
-          />
-          <Animation />
-        </Chart>
-      </Paper>
+
+      <Page title="Sets">
+        <Container maxWidth={false}>
+          <Box mt={3}>
+            <Grid
+              container
+              spacing={3}
+            >
+            </Grid>
+          </Box>
+        </Container>
+      </Page>
+  
     )
   }
 
