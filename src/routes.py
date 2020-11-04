@@ -22,6 +22,7 @@ from singleImageAnalyzer import *
 from imageSetAnalyzer import *
 from flask import jsonify
 from flask_cors import CORS
+import webcolors
 
 config = {
   'ORIGINS': [
@@ -84,11 +85,16 @@ def getCollectionArray():
     setName = request.args.get('set')
     obj = {'company': company, 'set' : setName}
     setArr = dbGetCompanySetArray(obj)
-    print(setArr['color_set'])
+    answer = []
     colorDict = {}
     for color in setArr['color_set']:
-        colorDict[color[0]] = color[1]
-    return colorDict
+        colorDict["id"] = color[0]
+        colorDict["value"] = int(color[1])
+        h,l,s = rgb_to_hsl(webcolors.name_to_rgb(color[0])[0], webcolors.name_to_rgb(color[0])[1], webcolors.name_to_rgb(color[0])[2])
+        colorDict["color"] = "hsl(" + str(int(h)) + ", " + str(int(s)) + "%, " + str(int(l)) + "%)"
+        answer.append(colorDict)
+        colorDict = {}
+    return jsonify(answer)
 
 #Get array data of an image in collection
 @app.route('/image/array/', methods=['GET'])
