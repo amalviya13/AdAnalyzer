@@ -11,6 +11,7 @@ import NotFoundView from 'src/views/errors/NotFoundView';
 import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
+import SpecificSetView from 'src/views/specificSet/SpecificSetView'
 
 const routes = [
   {
@@ -23,7 +24,8 @@ const routes = [
       { path: 'products', element: <ProductListView /> },
       { path: 'collections', element: <SetListView />},
       { path: 'settings', element: <SettingsView /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '*', element: <Navigate to="/404" /> },
+      { path: 'specificSet', element: <SpecificSetView />}
     ]
   },
   {

@@ -57,7 +57,6 @@ class ProductList extends React.Component {
                   xs={12}
                 >
                   <SetCard
-                    className={set}
                     product={set}
                   />
                 </Grid>

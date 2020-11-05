@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProductCard = ({ className, product, ...rest }) => {
+const SetCard = ({ className, product, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -75,7 +75,7 @@ const ProductCard = ({ className, product, ...rest }) => {
               variant="body2" 
               component={Link} to=
                 {{
-                  pathname: "/app/customers",
+                  pathname: "/app/specificSet",
                   data: product
                 }}>
                 <Typography
@@ -100,9 +100,9 @@ const ProductCard = ({ className, product, ...rest }) => {
   );
 };
 
-ProductCard.propTypes = {
+SetCard.propTypes = {
   className: PropTypes.string,
   product: PropTypes.object.isRequired
 };
 
-export default ProductCard;
+export default SetCard;

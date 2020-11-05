@@ -35,17 +35,15 @@ const Toolbar = ({ className, ...rest }) => {
         display="flex"
         justifyContent="flex-end"
       >
-        <Button className={classes.importButton}>
-          Import
-        </Button>
-        <Button className={classes.exportButton}>
-          Export
+        <Button
+          color="primary"
+        >
+          Add Image
         </Button>
         <Button
           color="primary"
-          variant="contained"
         >
-          Add Image
+          Delete Image
         </Button>
       </Box>
       <Box mt={3}>
