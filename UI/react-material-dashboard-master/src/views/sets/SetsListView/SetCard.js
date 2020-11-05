@@ -14,7 +14,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import PermMediaSharpIcon from '@material-ui/icons/PermMediaSharp';
-
+import AssessmentIcon from '@material-ui/icons/Assessment';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -86,6 +86,23 @@ const ProductCard = ({ className, product, ...rest }) => {
                   {product.num_images}
                   {' '}
                   Images
+                </Typography>
+            </Button>
+            <AssessmentIcon/>
+            <Button color="textSecondary"
+              display="inline"
+              variant="body2" 
+              component={Link} to=
+                {{
+                  pathname: "/app/dashboard",
+                  data: "arnav"
+                }}>
+                <Typography
+                  color="textSecondary"
+                  display="inline"
+                  variant="body2"
+                >
+                  Set Analytics
                 </Typography>
             </Button>
           </Grid>

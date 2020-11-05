@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -12,19 +21,30 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  importButton: {
-    marginRight: theme.spacing(1)
-  },
-  exportButton: {
-    marginRight: theme.spacing(1)
-  }
-}));
 
 const Toolbar = ({ className, ...rest }) => {
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
+
+  const useStyles = makeStyles((theme) => ({
+    root: {},
+    dialogPaper: { 
+      minHeight: '80vh',
+      maxHeight: '80vh'
+    },
+    addSet: {
+      marginRight: theme.spacing(1),
+      marginTop: theme.spacing(1)
+    }
+  }));
+
   const classes = useStyles();
+  const [description, setDescription] = useState("");
+  const [open, setOpen] = useState(false)
 
   return (
     <div
@@ -35,43 +55,40 @@ const Toolbar = ({ className, ...rest }) => {
         display="flex"
         justifyContent="flex-end"
       >
-        <Button className={classes.importButton}>
-          Import
-        </Button>
-        <Button className={classes.exportButton}>
-          Export
-        </Button>
         <Button
           color="primary"
           variant="contained"
+          className={classes.addSet}
+          onClick={() => setOpen(true)}
         >
-          Add product
+          Add set
         </Button>
-      </Box>
-      <Box mt={3}>
-        <Card>
-          <CardContent>
-            <Box maxWidth={500}>
-              <TextField
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
-                        <SearchIcon />
-                      </SvgIcon>
-                    </InputAdornment>
-                  )
-                }}
-                placeholder="Search set"
-                variant="outlined"
-              />
-            </Box>
-          </CardContent>
-        </Card>
+        <Dialog
+          open={open}
+        >
+          <DialogTitle id="max-width-dialog-title">Optional sizes</DialogTitle>
+          { <FormControl fullWidth>
+            <InputLabel htmlFor="CSV">CSV</InputLabel>
+            <Input
+              id="comment"
+              onChange={event => setDescription(event.target.value)}
+            />                      
+          </FormControl> }
+          <div>
+            <Button
+              onClick={refreshPage}
+              m={5}
+            >
+              Submit
+            </Button>
+            <Button
+              m={5}
+              onClick={refreshPage}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Dialog>
       </Box>
     </div>
   );
