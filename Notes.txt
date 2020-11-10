@@ -1,35 +1,21 @@
-Notes
-OCTOBER 17TH 2 PAGES DONE
-ALL COLLECTIONS PAGE - Arnav
-- Search Bar
-- Grid showing all collections 
-- Each box should show title of collection and # photos
-- Button to add collection
+Set Data Page
+- Pie Chart of Colors - Arnav
+https://formidable.com/open-source/victory/docs/victory-pie
 
-SPECIFIC COLLECTION PAGE - Anjan
-- Search Bar
-- List/Grid view of images which shows a preview and image name
-- Button for deleting collection
-- Button for adding an image 
+- Bar chart of CTR for current and top 5 sets - Anjan
+https://formidable.com/open-source/victory/docs/victory-bar
+https://codesandbox.io/s/wn602n19ww?file=/src/index.js
 
-HOW TO SHOW DATA
-- Pie Chart (Take array take top 10 colors?)
-- Bar Graph showing different ctr's between collections
-- Percentage of Warm/Cool images in dataset in the form of a cirlce percentage thingy
+- Histogram of CTR buckets with # images - Anjan
+https://formidable.com/open-source/victory/docs/new#victoryhistogram
 
-POST CALLS - Both require recalculation of set array
-- New Image
-- New Set
+- Bar chart # warm / cool colors - Arnav
+https://formidable.com/open-source/victory/docs/victory-bar
 
-GET CALLS
-- Get Image
-- Get All Images
-- Get All Set Names
-- Get Set
-- Get Data of Image
-- Get Data of Set
+Image Data Page
+- Pie Chart of Colors - Arnav
+https://formidable.com/open-source/victory/docs/victory-pie
 
-DELETE CALLS
-- Delete Image
-  - Requires recalculation of set array
-- Delete Set
+- Bar chart of CTR - Top 5 Images + Current Image - Arnav
+https://formidable.com/open-source/victory/docs/victory-bar
+https://codesandbox.io/s/wn602n19ww?file=/src/index.js
