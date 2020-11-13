@@ -11,6 +11,7 @@ from colorAnalyzer import *
 import webcolors
 from scipy.spatial import KDTree
 from PIL import Image
+import colorsys
 
 def RGB2HEX(color):
     return "#{:02x}{:02x}{:02x}".format(int(color[0]), int(color[1]), int(color[2]))
@@ -103,6 +104,16 @@ def get_color_set(filePath):
         else:
             continue
     return(sorted(allColors.items(), key=lambda x: x[1]))
+
+def rgb_to_hsl(r, g, b):
+    r = r/255   
+    g = g/255
+    b = b/255
+    h,s,l = colorsys.rgb_to_hls(r,g,b)
+    h = h * 360
+    s = s * 100
+    l = l * 100
+    return h,s,l
 
 if __name__ == '__main__':
     parser = ArgumentParser()
