@@ -70,5 +70,7 @@ def dbGetCompanySetArray(obj):
     setData = companyCollection.find_one(obj, {'_id': 0})
     return setData
 
-
-
+#get top 5 sorted images from a set
+def dbGetCompanyImagesSorted(companyName, obj):
+    companyCollection = dbGetCompanyCollection(companyName)
+    return companyCollection.find({'set': obj['set']}, {'_id': 0}).sort('ctr').limit(5)

@@ -168,5 +168,40 @@ def deleteImage():
 	deleteCount = dbCompanyDeleteOne(company, obj)
 	return str(deleteCount)
 
+
+@app.route('/image/set/CTR', methods=['GET'])
+def getSetCTRs():
+    company = request.args.get('company')
+    setName = request.args.get('set')
+    image_route = request.args.get('route')
+    obj = {'set': setName, 'image_route': image_route}
+    companySet = dbGetCompanySet(company, obj)
+    ctrList = []
+    for image in companySet:
+        #print({"x": image['ctr']})
+        #print()
+        tempMap = {}
+        tempMap['x'] = image['ctr']
+        ctrList.append(tempMap)
+    print(ctrList)
+    return jsonify(ctrList)
+
+
+# used to get the top 5 images from a set
+@app.route('/image/set/best', methods=['GET'])
+def getBestInSet():
+    company = request.args.get('company')
+    setName = request.args.get('set')
+    image_route = request.args.get('route') 
+    obj1 = {'set' : setName}
+    companySet = dbGetCompanyImagesSorted(company, obj1) # get all images from set for sorting (to get top 5)
+    obj2 = {'set' : setName, 'image_route' : image_route}
+    currImage = dbGetImage(company, obj2)
+    imageList = []
+    for image in companySet:
+        imageList.append(image)
+    return jsonify(imageList)
+
+
 if __name__ == '__main__': 
     app.run(debug=True) 
