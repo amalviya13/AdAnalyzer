@@ -1,18 +1,13 @@
 import React, { Component, useState } from 'react';
 import {
   Box,
-  Container,
-  Grid,
-  makeStyles
+  Container
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Paper from '@material-ui/core/Paper';
+import victory from "victory";
 import {
-  Chart,
-  PieSeries,
-  Title,
-} from '@devexpress/dx-react-chart-material-ui';
-import { Animation } from '@devexpress/dx-react-chart';
+  VictoryPie
+} from "victory";
 
 
 class Pie extends React.Component {
@@ -20,7 +15,8 @@ class Pie extends React.Component {
     super(props);
     this.state = {
       sets: [],
-      data: []
+      data: [],
+      testData: []
     };
   }
 
@@ -48,12 +44,18 @@ class Pie extends React.Component {
 
       <Page title="Sets">
         <Container maxWidth={false}>
-          <Box mt={3}>
-            <Grid
-              container
+          <Box mt={1}>
+            <div
               spacing={3}
+              style={{height: 400}}
             >
-            </Grid>
+              <VictoryPie
+                data={this.state.sets}
+                style={{
+                  data: { fill: (d) => d.datum.color } 
+                }}
+              />
+            </div>
           </Box>
         </Container>
       </Page>

@@ -23,6 +23,7 @@ from imageSetAnalyzer import *
 from flask import jsonify
 from flask_cors import CORS
 import webcolors
+import matplotlib
 
 config = {
   'ORIGINS': [
@@ -87,13 +88,17 @@ def getCollectionArray():
     setArr = dbGetCompanySetArray(obj)
     answer = []
     colorDict = {}
+    counter = 0
     for color in setArr['color_set']:
-        colorDict["id"] = color[0]
-        colorDict["value"] = int(color[1])
-        h,l,s = rgb_to_hsl(webcolors.name_to_rgb(color[0])[0], webcolors.name_to_rgb(color[0])[1], webcolors.name_to_rgb(color[0])[2])
-        colorDict["color"] = "hsl(" + str(int(h)) + ", " + str(int(s)) + "%, " + str(int(l)) + "%)"
-        answer.append(colorDict)
-        colorDict = {}
+        if counter == 8:
+            break
+        if color[0] != 'black' and color[0] != 'white' and color[0] != 'grey':
+            counter += 1
+            colorDict["x"] = color[0]  
+            colorDict["y"] = int(color[1])
+            colorDict["color"] = matplotlib.colors.to_hex([ webcolors.name_to_rgb(color[0])[0]/256, webcolors.name_to_rgb(color[0])[1]/256, webcolors.name_to_rgb(color[0])[2]/256 ])
+            answer.append(colorDict)
+            colorDict = {}
     return jsonify(answer)
 
 #Get array data of an image in collection
@@ -133,7 +138,6 @@ def newImageSet():
     counter = 0
     myObj = []
     for key, value in fileDict.items():  
-        print(key)
         if(counter == 23):
             break
         counter = counter + 1
@@ -146,7 +150,6 @@ def newImageSet():
     color_set = get_color_set(route)
     obj = []
     obj.append({'company' : company, 'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
-    print(obj)
     status = dbCompanyInsertMany("company_set_data", obj)  #change such that it updates separate collection rather than same collection
     return "Uploaded Set"
 
