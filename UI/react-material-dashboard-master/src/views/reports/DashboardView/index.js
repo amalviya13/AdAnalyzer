@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import Pie from './Pie';
+import Bar from './Bar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,15 +93,15 @@ const Dashboard = () => {
           >
             <Pie />
           </Grid>
-          {/* <Grid
+          <Grid
             item
             lg={8}
             md={12}
             xl={9}
             xs={12}
           >
-            <LatestOrders />
-          </Grid> */}
+            <Bar />
+          </Grid>
         </Grid>
       </Container>
     </Page>
