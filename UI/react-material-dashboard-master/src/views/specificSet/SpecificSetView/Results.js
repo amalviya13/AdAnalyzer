@@ -71,6 +71,7 @@ const Results = ({ className, images, ...rest }) => {
     setPage(newPage);
   };
 
+
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -96,9 +97,6 @@ const Results = ({ className, images, ...rest }) => {
                 <TableCell>
                   Image Name
                 </TableCell>
-                <TableCell>
-                  Date Added
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -108,7 +106,7 @@ const Results = ({ className, images, ...rest }) => {
                   key={image}
                   selected={selectedImages.indexOf(image) !== -1}
                 >   
-                <TableCell>
+                <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedImages.indexOf(image) !== -1}
                     onChange={(event) => handleSelectOne(event, image)}
@@ -129,13 +127,10 @@ const Results = ({ className, images, ...rest }) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {image}
+                        {image.split("/").pop()}
                       </Typography>
                     </Box>
-                </TableCell>            
-                <TableCell>
-                  {image}
-                </TableCell>
+                </TableCell>      
               </TableRow>
               ))}
             </TableBody>
