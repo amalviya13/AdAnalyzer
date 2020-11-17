@@ -108,11 +108,16 @@ def getImageArray():
     setName = request.args.get('set')
     imageName = request.args.get('imageName')
     obj = {'set' : setName, 'image_route' : imageName}
+    answer = []
     colorDict = {}
     imgArray = dbGetImageArray(company, obj)
-    for img in imgArray:
-        colorDict[img[0]] = img[1]
-    return colorDict
+    for color in imgArray:
+        colorDict = {}
+        colorDict["x"] = color[0]  
+        colorDict["y"] = int(color[1])
+        colorDict["color"] = matplotlib.colors.to_hex([ webcolors.name_to_rgb(color[0])[0]/256, webcolors.name_to_rgb(color[0])[1]/256, webcolors.name_to_rgb(color[0])[2]/256 ])
+        answer.append(colorDict)
+    return jsonify(answer)
 
 #Upload new image   
 #Needs to be changed so now it will get data array data of its set and recalculate it
@@ -137,19 +142,18 @@ def newImageSet():
     fileDict = getCSVData(route)
     counter = 0
     myObj = []
+    ctr_average = 0
     for key, value in fileDict.items():  
-        if(counter == 23):
-            break
-        counter = counter + 1
+        ctr_average += value
         warm_cool = warm_or_cool(key)
         top_color = weightedColors(key)
         myObj.append({'image_route' : key, 'set' : setName, 'warm_or_cool' : warm_cool, 'top_colors' : top_color, 'ctr' : value})
 
     dbCompanyInsertMany(company, myObj)
-
+    ctr_average = ctr_average/len(fileDict.items())
     color_set = get_color_set(route)
     obj = []
-    obj.append({'company' : company, 'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter})
+    obj.append({'company' : company, 'set_route' : route, 'set' : setName, 'color_set' : color_set, 'num_images' : counter, 'average_ctr': ctr_average})
     status = dbCompanyInsertMany("company_set_data", obj)  #change such that it updates separate collection rather than same collection
     return "Uploaded Set"
 
@@ -201,7 +205,7 @@ def getSetCTRs():
 
 
 # used to get the top 5 images from a set
-@app.route('/image/set/best', methods=['GET'])
+@app.route('/set/image/best', methods=['GET'])
 def getBestInSet():
     company = request.args.get('company')
     setName = request.args.get('set')
@@ -212,9 +216,34 @@ def getBestInSet():
     currImage = dbGetImage(company, obj2)
     imageList = []
     for image in companySet:
-        imageList.append(image)
+        imageList.append({'x': image['image_route'].split('/')[-1], 'y': float(image['ctr'])})
+    imageList.append({'x': currImage['image_route'].split('/')[-1], 'y': float(currImage['ctr'])})
     return jsonify(imageList)
 
+@app.route('/image/set/warmthDistribution', methods=['GET'])
+def getSetWarmthDistribution():
+    company = request.args.get('company')
+    setName = request.args.get('set')
+    obj1 = {'set' : setName}
+    warmCoolDistribution = dbGetSetWarmCoolDistribution(company, obj1) # get all images from set for sorting (to get top 5)
+    answer = []
+    answer.append({'x': 'warm', 'y': warmCoolDistribution[0]})
+    answer.append({'x': 'cool', 'y': warmCoolDistribution[1]})
+    return jsonify(answer)
+
+# used to get the top 5 sets
+@app.route('/set/best', methods=['GET'])
+def getBestInSet():
+    company = request.args.get('company')
+    setName = request.args.get('set')
+    companySets = dbGetCompanySetsSorted(company, obj1) # get all images from set for sorting (to get top 5)
+    obj = {'set' : setName}
+    currSet = dbGetCompanySetData(company, obj)
+    setList = []
+    for set in companySet:
+        imageList.append({'x': set['set'], 'y': float(image['average_ctr'])})
+    setList.append({'x': currSet['set'], 'y': float(currSet['average_ctr'])})
+    return jsonify(setList)
 
 if __name__ == '__main__': 
     app.run(debug=True) 
