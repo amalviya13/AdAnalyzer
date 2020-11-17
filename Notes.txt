@@ -1,21 +1,21 @@
 Set Data Page
-- Pie Chart of Colors - Arnav
+- Pie Chart of Colors - Arnav (/collection/array)
 https://formidable.com/open-source/victory/docs/victory-pie
 
 - Bar chart of CTR for current and top 5 sets - Anjan
 https://formidable.com/open-source/victory/docs/victory-bar
 https://codesandbox.io/s/wn602n19ww?file=/src/index.js
 
-- Histogram of CTR buckets with # images - Anjan
+- Histogram of CTR buckets with # images - Anjan (/image/set/CTR)
 https://formidable.com/open-source/victory/docs/new#victoryhistogram
 
-- Bar chart # warm / cool colors - Arnav
+- Bar chart # warm / cool colors - Arnav (/image/set/warmthDistribution)
 https://formidable.com/open-source/victory/docs/victory-bar
 
 Image Data Page
-- Pie Chart of Colors - Arnav
+- Pie Chart of Colors - Arnav (/image/array/)
 https://formidable.com/open-source/victory/docs/victory-pie
 
-- Bar chart of CTR - Top 5 Images + Current Image - Arnav
+- Bar chart of CTR - Top 5 Images + Current Image - Arnav (/image/set/best)
 https://formidable.com/open-source/victory/docs/victory-bar
 https://codesandbox.io/s/wn602n19ww?file=/src/index.js
