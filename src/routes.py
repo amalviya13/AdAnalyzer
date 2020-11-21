@@ -191,8 +191,6 @@ def getSetCTRs():
     companySet = dbGetCompanySet(company, obj)
     ctrList = []
     for image in companySet:
-        #print({"x": image['ctr']})
-        #print()
         tempMap = {}
         tempMap['x'] = image['ctr']
         ctrList.append(tempMap)
@@ -212,7 +210,10 @@ def getBestInSet():
     currImage = dbGetImage(company, obj2)
     imageList = []
     for image in companySet:
-        imageList.append(image)
+        tempMap = {}
+        tempMap['x'] = image['image_route'].rsplit('/', 1)[-1]
+        tempMap['y'] = image['ctr']
+        imageList.append(tempMap)
     return jsonify(imageList)
 
 

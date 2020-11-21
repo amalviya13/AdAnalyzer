@@ -4,34 +4,26 @@ import {
   Container
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import victory from "victory";
+import { ResponsiveBar } from '@nivo/bar'
 import {
-  VictoryPie,
-  VictoryLabel
-} from "victory";
+    VictoryChart,
+    VictoryHistogram,
+    VictoryTheme
+  } from "victory";
 
 
-class Pie extends React.Component {
+class Histogram extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sets: [
-        {x: '', y: 0},
-        {x: '', y: 1},
-        {x: '', y: 2},
-        {x: '', y: 3},
-        {x: '', y: 4},
-        {x: '', y: 5},
-        {x: '', y: 6},
-        {x: '', y: 7}
-      ],
+      sets: [],
       data: [],
       testData: []
     };
   }
 
   componentDidMount(){
-    fetch("http://127.0.0.1:5000/collection/array?company=nike&set=arnav")
+    fetch("http://127.0.0.1:5000/image/set/CTR?company=nike&set=arnav")
       .then(res => res.json())
       .then(
         (result) => {
@@ -58,17 +50,18 @@ class Pie extends React.Component {
               spacing={3}
               style={{height: 400}}
             >
-              <VictoryPie
-                data={this.state.sets}
-                innerRadius = {15}
-                padAngle={5}
-                radius = {125}
-                labels={() => null}
-                animate={{ duration: 2000 }}
-                style={{
-                  data: { fill: (d) => d.datum.color } 
-                }}
-              />
+                <VictoryChart>
+                    <VictoryHistogram
+                        style={{ data: { fill: '#F1737F' }}}
+                        animate={{
+                            duration: 2000,
+                            onLoad: { duration: 1000 }
+                        }}
+                        bins={[0, .05 , .1, .15, .2, .25, .3, .35, .4, .45, .5, .55, .6, .65, .7, .75, .8, .85, .9, .95, 1]}
+                        cornerRadius={3}
+                        data={this.state.sets}
+                    />
+                </VictoryChart>
             </div>
           </Box>
         </Container>
@@ -79,4 +72,4 @@ class Pie extends React.Component {
 
 }
 
-export default Pie;
+export default Histogram;
