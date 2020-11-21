@@ -195,8 +195,6 @@ def getSetCTRs():
     companySet = dbGetCompanySet(company, obj)
     ctrList = []
     for image in companySet:
-        #print({"x": image['ctr']})
-        #print()
         tempMap = {}
         tempMap['x'] = image['ctr']
         ctrList.append(tempMap)
@@ -216,7 +214,8 @@ def getBestInSet():
     currImage = dbGetImage(company, obj2)
     imageList = []
     for image in companySet:
-        imageList.append({'x': image['image_route'].split('/')[-1], 'y': float(image['ctr'])})
+        if(image['image_route'] != currImage['image_route']):
+            imageList.append({'x': image['image_route'].split('/')[-1], 'y': float(image['ctr'])})
     imageList.append({'x': currImage['image_route'].split('/')[-1], 'y': float(currImage['ctr'])})
     return jsonify(imageList)
 
@@ -233,15 +232,16 @@ def getSetWarmthDistribution():
 
 # used to get the top 5 sets
 @app.route('/set/best', methods=['GET'])
-def getBestInSet():
+def getBestSets():
     company = request.args.get('company')
     setName = request.args.get('set')
-    companySets = dbGetCompanySetsSorted(company, obj1) # get all images from set for sorting (to get top 5)
     obj = {'set' : setName}
+    companySets = dbGetCompanySetsSorted(company) # get all images from set for sorting (to get top 5)
     currSet = dbGetCompanySetData(company, obj)
     setList = []
-    for set in companySet:
-        imageList.append({'x': set['set'], 'y': float(image['average_ctr'])})
+    for set in companySets:
+        if(set['set'] != currSet['set']):
+            setList.append({'x': set['set'], 'y': float(set['average_ctr'])})
     setList.append({'x': currSet['set'], 'y': float(currSet['average_ctr'])})
     return jsonify(setList)
 

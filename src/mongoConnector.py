@@ -73,7 +73,7 @@ def dbGetCompanySetArray(obj):
 #get top 5 sorted images from a set
 def dbGetCompanyImagesSorted(companyName, obj):
     companyCollection = dbGetCompanyCollection(companyName)
-    return companyCollection.find({'set': obj['set']}, {'_id': 0}).sort('ctr').limit(5)
+    return companyCollection.find({'set': obj['set']}, {'_id': 0}).sort([('ctr', -1)]).limit(5)
 
 def dbGetSetWarmCoolDistribution(companyName, obj):
     companyCollection = dbGetCompanyCollection(companyName)
@@ -82,10 +82,10 @@ def dbGetSetWarmCoolDistribution(companyName, obj):
     return (numWarm, numCool)
 
 #get top 5 sets from a company
-def dbGetCompanySetsSorted(companyName, obj):
+def dbGetCompanySetsSorted(companyName):
     companyCollection = dbGetCompanyCollection('company_set_data')
     return companyCollection.find({'company': companyName}, {'_id': 0}).sort('ctr').limit(5)
 
 def dbGetCompanySetData(companyName, obj):
 	companyCollection = dbGetCompanyCollection('company_set_data')
-	return companyCollection.findOne({'company': companyName, 'set': obj['set']})
+	return companyCollection.find_one({'company': companyName, 'set': obj['set']})
