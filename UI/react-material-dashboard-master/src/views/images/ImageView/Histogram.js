@@ -1,14 +1,12 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import { ResponsiveBar } from '@nivo/bar'
 import {
     VictoryChart,
-    VictoryHistogram,
-    VictoryTheme
+    VictoryHistogram
   } from "victory";
 
 
@@ -40,7 +38,6 @@ class Histogram extends React.Component {
   }
 
   render() {
-    const { data: chartData } = this.state.data;
     return (
 
       <Page title="Sets">

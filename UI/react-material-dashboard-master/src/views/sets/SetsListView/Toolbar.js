@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,19 +6,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
-  Card,
-  CardContent,
-  TextField,
-  InputAdornment,
-  SvgIcon,
   makeStyles
 } from '@material-ui/core';
-import { Search as SearchIcon } from 'react-feather';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
 const Toolbar = ({ className, ...rest }) => {
@@ -40,7 +32,7 @@ const Toolbar = ({ className, ...rest }) => {
   }));
 
   const classes = useStyles();
-  const [description, setDescription] = useState("");
+  const [setDescription] = useState("");
   const [open, setOpen] = useState(false)
 
   return (

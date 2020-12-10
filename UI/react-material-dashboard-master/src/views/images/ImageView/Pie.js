@@ -1,13 +1,11 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import victory from "victory";
 import {
-  VictoryPie,
-  VictoryLabel
+  VictoryPie
 } from "victory";
 
 
@@ -31,7 +29,7 @@ class Pie extends React.Component {
   }
 
   componentDidMount(){
-    fetch("http://127.0.0.1:5000/collection/array?company=nike&set=arnav")
+    fetch("http://127.0.0.1:5000/image/array?company=nike&set=arnav&imageName=/Users/arnavmalviya/Desktop/COD/693767_1214699_bundle_archive/doom/3orpc5p97to41.jpg")
       .then(res => res.json())
       .then(
         (result) => {
@@ -48,7 +46,6 @@ class Pie extends React.Component {
   }
 
   render() {
-    const { data: chartData } = this.state.data;
     return (
 
       <Page title="Sets">

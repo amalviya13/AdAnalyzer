@@ -43,7 +43,13 @@ const Dashboard = () => {
             <Histogram />
           </Grid>
         </Grid>
-        <Grid>
+        <Grid
+          container
+          spacing={3}
+        >
+          <Grid>
+            <Top5Bar />
+          </Grid>
           <Grid>
             <Top5Bar />
           </Grid>
