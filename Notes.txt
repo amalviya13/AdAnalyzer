@@ -1,21 +1,32 @@
-Set Data Page
-- Pie Chart of Colors - Arnav (/collection/array)
-https://formidable.com/open-source/victory/docs/victory-pie
+Image List View Changes
+- Currently is simply printed out by
 
-- Bar chart of CTR for current and top 5 sets - Anjan
-https://formidable.com/open-source/victory/docs/victory-bar
-https://codesandbox.io/s/wn602n19ww?file=/src/index.js
+<Grid
+  container
+  spacing={3}
+>
+  {this.state.sets.map((set) => (
+    <Grid
+      item
+      key={set}
+      lg={4}
+      md={6}
+      xs={12}
+    >
+      <SetCard
+        product={set}
+      />
+    </Grid>
+  ))}
+</Grid>
 
-- Histogram of CTR buckets with # images - Anjan (/image/set/CTR)
-https://formidable.com/open-source/victory/docs/new#victoryhistogram
+- Doesn't allow me to add a button next to each image since it is just this.state.sets.map
+- Option 1: Make each image its own componenet, so the componenet can have two simple parts - Name and a Button
+- Option 2: Find a way to create a button next to each of the this.state.sets.map - examples are online of this as well
 
-- Bar chart # warm / cool colors - Arnav (/image/set/warmthDistribution)
-https://formidable.com/open-source/victory/docs/victory-bar
+https://stackoverflow.com/questions/50538250/how-to-make-list-items-clickable-individually-from-one-another-in-react-js
 
-Image Data Page
-- Pie Chart of Colors - Arnav (/image/array/)
-https://formidable.com/open-source/victory/docs/victory-pie
-
-- Bar chart of CTR - Top 5 Images + Current Image - Arnav (/image/set/best)
-https://formidable.com/open-source/victory/docs/victory-bar
-https://codesandbox.io/s/wn602n19ww?file=/src/index.js
+- Current url for this page is /app/SpecificSet/:setName
+- Could you figure out a way to get the :setName URL parameter into the API call to get rid of hardcode
+- Could take a look at what I've done however it is slightly different (Dashboard/Pie.js one example)
+- All those files are Typescript while this uses a react class which makes it different
