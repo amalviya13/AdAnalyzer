@@ -1,16 +1,12 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container,
-  Grid,
-  makeStyles
+  Grid
 } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
 import Page from 'src/components/Page';
 import Toolbar from './Toolbar';
 import SetCard from './SetCard';
-import data from './data';
-
 class ProductList extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +20,6 @@ class ProductList extends React.Component {
       .then(res => res.json())
       .then(
         (result) => {
-          console.log(result)
           this.setState({
             sets: result
           });
@@ -38,7 +33,6 @@ class ProductList extends React.Component {
   }
 
   render() {
-    console.log(this.state.sets)
     return (
       <Page title="Sets">
         <Container maxWidth={false}>

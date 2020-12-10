@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container,
@@ -7,7 +7,6 @@ import {
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
-import data from './data';
 /*
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,8 +23,9 @@ const [customers] = useState(data);*/
 class SpecificSetView extends React.Component {
   constructor(props) {
     super(props);
+    //this.setName = this.props.location.state
     this.state = {
-      images: []
+      images: [],
     };
     this.classes = makeStyles((theme) => ({
       root: {
@@ -38,11 +38,11 @@ class SpecificSetView extends React.Component {
   }
 
   componentDidMount(){
+    console.log(this.setName)
     fetch("http://127.0.0.1:5000/collection/images/?company=nike&set=arnav")
       .then(res => res.json())
       .then(
         (result) => {
-          console.log(result)
           this.setState({
             images: result
           });

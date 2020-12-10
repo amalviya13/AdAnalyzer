@@ -73,7 +73,6 @@ def getSet():
     companySet = dbGetCompanySet(company, obj)
     imageList = []
     for image in companySet:
-        print(image)
         if ("image_route" in image):
             imageList.append(image["image_route"])
     return jsonify(imageList)
@@ -112,11 +111,12 @@ def getImageArray():
     colorDict = {}
     imgArray = dbGetImageArray(company, obj)
     for color in imgArray:
-        colorDict = {}
-        colorDict["x"] = color[0]  
-        colorDict["y"] = int(color[1])
-        colorDict["color"] = matplotlib.colors.to_hex([ webcolors.name_to_rgb(color[0])[0]/256, webcolors.name_to_rgb(color[0])[1]/256, webcolors.name_to_rgb(color[0])[2]/256 ])
-        answer.append(colorDict)
+        if color[0] != 'black' and color[0] != 'white' and color[0] != 'grey' and color[0] != 'silver':
+            colorDict = {}
+            colorDict["x"] = color[0]  
+            colorDict["y"] = int(color[1])
+            colorDict["color"] = matplotlib.colors.to_hex([ webcolors.name_to_rgb(color[0])[0]/256, webcolors.name_to_rgb(color[0])[1]/256, webcolors.name_to_rgb(color[0])[2]/256 ])
+            answer.append(colorDict)
     return jsonify(answer)
 
 #Upload new image   
@@ -198,7 +198,6 @@ def getSetCTRs():
         tempMap = {}
         tempMap['x'] = image['ctr']
         ctrList.append(tempMap)
-    print(ctrList)
     return jsonify(ctrList)
 
 
@@ -217,6 +216,18 @@ def getBestInSet():
         if(image['image_route'] != currImage['image_route']):
             imageList.append({'x': image['image_route'].split('/')[-1], 'y': float(image['ctr'])})
     imageList.append({'x': currImage['image_route'].split('/')[-1], 'y': float(currImage['ctr'])})
+    return jsonify(imageList)
+
+# used to get the top 5 images from a set
+@app.route('/set/top5/best', methods=['GET'])
+def getTop5Set():
+    company = request.args.get('company')
+    setName = request.args.get('set')
+    obj1 = {'set' : setName}
+    companySet = dbGetCompanyImagesSorted(company, obj1) # get all images from set for sorting (to get top 5)
+    imageList = []
+    for image in companySet:
+        imageList.append({'x': image['image_route'].split('/')[-1], 'y': float(image['ctr'])})
     return jsonify(imageList)
 
 @app.route('/image/set/warmthDistribution', methods=['GET'])

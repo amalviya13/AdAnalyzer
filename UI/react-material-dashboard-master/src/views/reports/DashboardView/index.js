@@ -1,4 +1,7 @@
-import React from 'react';
+import React from "react";
+import {
+  useParams
+} from "react-router-dom";
 import {
   Container,
   Grid,
@@ -8,7 +11,8 @@ import Page from 'src/components/Page';
 import Pie from './Pie';
 import Histogram from './Histogram';
 import Top5Bar from './Top5Bar';
-
+import WarmCool from './WarmCool';
+import TopSets from './TopSets';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-
+  const params = useParams();
   return (
     <Page
       className={classes.root}
@@ -35,17 +39,37 @@ const Dashboard = () => {
           <Grid
             item
           >
-            <Pie />
+            <Pie setName={params.setName} company="nike"/>
           </Grid>
           <Grid
             item
           >
-            <Histogram />
+            <Histogram setName={params.setName} company="nike"/>
           </Grid>
         </Grid>
-        <Grid>
-          <Grid>
-            <Top5Bar />
+        <Grid
+          container
+          spacing={5}
+        >
+          <Grid
+            item
+          >
+            <Top5Bar setName={params.setName} company="nike"/>
+          </Grid>
+          <Grid
+            item
+          >
+            <WarmCool setName={params.setName} company="nike"/>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          spacing={5}
+        >
+          <Grid
+            item
+          >
+            <TopSets setName={params.setName} company="nike"/>
           </Grid>
         </Grid>
       </Container>

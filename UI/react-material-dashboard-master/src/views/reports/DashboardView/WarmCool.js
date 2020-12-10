@@ -10,7 +10,7 @@ import {
   } from "victory";
 
 
-class Top5Bar extends React.Component {
+class WarmCool extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +21,7 @@ class Top5Bar extends React.Component {
   }
 
   componentDidMount(){
-    var url = "http://127.0.0.1:5000/set/top5/best?set=" + this.props["setName"] + "&company=" + this.props["company"]
+    var url = "http://127.0.0.1:5000/image/set/warmthDistribution?company=" + this.props["company"] + "&set=" + this.props["setName"]
     fetch(url)
       .then(res => res.json())
       .then(
@@ -81,4 +81,4 @@ class Top5Bar extends React.Component {
 
 }
 
-export default Top5Bar;
+export default WarmCool;

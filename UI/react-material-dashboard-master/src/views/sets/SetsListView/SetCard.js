@@ -70,18 +70,16 @@ const SetCard = ({ className, product, ...rest }) => {
             item
           >
             <PermMediaSharpIcon/>
-            <Button color="textSecondary"
+            <Button
               display="inline"
-              variant="body2" 
+              
               component={Link} to=
                 {{
-                  pathname: "/app/specificSet",
-                  data: product
+                  pathname: "/app/specificSet/" + product.set,
+                  state: { query : product.set }
                 }}>
                 <Typography
-                  color="textSecondary"
                   display="inline"
-                  variant="body2"
                 >
                   {product.num_images}
                   {' '}
@@ -89,18 +87,16 @@ const SetCard = ({ className, product, ...rest }) => {
                 </Typography>
             </Button>
             <AssessmentIcon/>
-            <Button color="textSecondary"
+            <Button
               display="inline"
-              variant="body2" 
               component={Link} to=
                 {{
-                  pathname: "/app/dashboard",
-                  data: "arnav"
-                }}>
+                  pathname: "/app/dashboard/" + product.set,
+                  state: { "name": product.set }
+                }}
+              >
                 <Typography
-                  color="textSecondary"
                   display="inline"
-                  variant="body2"
                 >
                   Set Analytics
                 </Typography>

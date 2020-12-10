@@ -1,15 +1,12 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import victory from "victory";
 import {
   VictoryPie,
-  VictoryLabel
 } from "victory";
-
 
 class Pie extends React.Component {
   constructor(props) {
@@ -31,7 +28,9 @@ class Pie extends React.Component {
   }
 
   componentDidMount(){
-    fetch("http://127.0.0.1:5000/collection/array?company=nike&set=arnav")
+    var url = "http://127.0.0.1:5000/collection/array?company=" + this.props["company"] + "&set=" + this.props["setName"]
+    console.log(url)
+    fetch(url)
       .then(res => res.json())
       .then(
         (result) => {
@@ -48,7 +47,6 @@ class Pie extends React.Component {
   }
 
   render() {
-    const { data: chartData } = this.state.data;
     return (
 
       <Page title="Sets">

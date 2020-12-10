@@ -1,14 +1,12 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import { ResponsiveBar } from '@nivo/bar'
 import {
     VictoryChart,
-    VictoryBar,
-    VictoryAxis
+    VictoryBar
   } from "victory";
 
 
@@ -23,9 +21,9 @@ class Top5Bar extends React.Component {
   }
 
   componentDidMount(){
-    fetch("http://127.0.0.1:5000/image/set/best?set=arnav&company=nike")
+    fetch("http://127.0.0.1:5000/set/image/best?set=arnav&company=nike&route=/Users/arnavmalviya/Desktop/COD/693767_1214699_bundle_archive/doom/3orpc5p97to41.jpg")
       .then(res => res.json())
-      .then(
+      .then(  
         (result) => {
           this.setState({
             sets: result
@@ -40,8 +38,6 @@ class Top5Bar extends React.Component {
   }
 
   render() {
-    console.log(this.state.sets)
-    const { data: chartData } = this.state.data;
     return (
 
       <Page title="Sets">

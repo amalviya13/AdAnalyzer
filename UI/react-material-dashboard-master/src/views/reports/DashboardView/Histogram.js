@@ -1,14 +1,12 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Container
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import { ResponsiveBar } from '@nivo/bar'
 import {
     VictoryChart,
-    VictoryHistogram,
-    VictoryTheme
+    VictoryHistogram
   } from "victory";
 
 
@@ -23,7 +21,8 @@ class Histogram extends React.Component {
   }
 
   componentDidMount(){
-    fetch("http://127.0.0.1:5000/image/set/CTR?company=nike&set=arnav")
+    var url = "http://127.0.0.1:5000/image/set/CTR?company=" + this.props["company"] + "&set=" + this.props["setName"]
+    fetch(url)
       .then(res => res.json())
       .then(
         (result) => {
@@ -40,7 +39,6 @@ class Histogram extends React.Component {
   }
 
   render() {
-    const { data: chartData } = this.state.data;
     return (
 
       <Page title="Sets">

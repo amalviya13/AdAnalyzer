@@ -18,10 +18,10 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: 'account', element: <AccountView /> },
-      { path: 'dashboard', element: <DashboardView /> },
+      { path: 'dashboard/:setName', element: <DashboardView /> },
       { path: 'collections', element: <SetListView />},
       { path: 'settings', element: <SettingsView /> },
-      { path: 'specificSet', element: <SpecificSetView />},
+      { path: 'specificSet/:setName', element: <SpecificSetView />},
       { path: 'image', element: <ImageView />}
     ]
   },
