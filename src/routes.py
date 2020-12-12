@@ -25,6 +25,12 @@ from flask_cors import CORS
 import webcolors
 import matplotlib
 
+
+#from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required,
+#                                get_jwt_identity, get_raw_jwt)
+import hashlib
+
+
 config = {
   'ORIGINS': [
     'http://localhost:3000',  # React
@@ -255,6 +261,29 @@ def getBestSets():
             setList.append({'x': set['set'], 'y': float(set['average_ctr'])})
     setList.append({'x': currSet['set'], 'y': float(currSet['average_ctr'])})
     return jsonify(setList)
+
+#@app.route('/login')
+# def
+
+
+@app.route('/register', methods=['POST'])
+def userRegistration():
+    user_data = {}
+    print("args:\n\n")
+    print(request)
+    user_data['fName'] = request.args.get('first_name')
+    user_data['lName'] = request.args.get('last_name')
+    user_data['email'] = request.args.get('email')
+    user_data['company'] = request.args.get('company')
+    user_data['password'] = hashlib.md5(request.args.get('password').encode()).hexdigest()
+    return dbAddUser(user_data)
+
+@app.route('/login', methods=['POST'])
+def userLogin():
+    user_data = {}
+    user_data['email'] = request.args.get('email')
+    user_data['password'] = hashlib.md5(request.args.get('password').encode()).hexdigest()
+    return dbFindUser(user_data)
 
 if __name__ == '__main__': 
     app.run(debug=True) 

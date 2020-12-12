@@ -89,3 +89,21 @@ def dbGetCompanySetsSorted(companyName):
 def dbGetCompanySetData(companyName, obj):
 	companyCollection = dbGetCompanyCollection('company_set_data')
 	return companyCollection.find_one({'company': companyName, 'set': obj['set']})
+
+
+# authentication
+def dbAddUser(user_data):
+    db = client['companies']
+    collection = db['users']
+    if collection.find_one({'email': user_data['email']}):
+        return {"error": "User already exists"}
+    collection.insert(user_data)
+    return {"success": "user added"}
+
+def dbFindUser(user_data):
+    db = client['companies']
+    collection = db['users']
+    user = collection.find_one({'email': user_data['email'], 'password': user_data['password']})
+    if not user:
+        return {"error": "username or password is incorrect"}
+    return {'get user access token': 'hi'}
