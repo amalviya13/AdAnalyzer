@@ -14,8 +14,10 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  makeStyles
+  makeStyles,
+  Button
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -129,6 +131,21 @@ const Results = ({ className, images, ...rest }) => {
                         {image.split("/").pop()}
                       </Typography>
                     </Box>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    display="inline"
+                    
+                    component={Link} to=
+                      {{
+                        pathname: "/app/image/" + image.split("/").pop()
+                      }}>
+                      <Typography
+                        display="inline"
+                      >
+                        Analytics
+                      </Typography>
+                  </Button>
                 </TableCell>      
               </TableRow>
               ))}
