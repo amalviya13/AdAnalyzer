@@ -1,2 +1,8 @@
-Top 5 Images in AnjPokemonSet incorrect
+Arnav -
+Fix top 5 Images in Anj Set
+Link image Analyzer page to correct image
+Working on the form page to upload a new set
+
+Anj -
+Registration page Auth stuff
 
