@@ -22,7 +22,7 @@ const routes = [
       { path: 'collections', element: <SetListView />},
       { path: 'settings', element: <SettingsView /> },
       { path: 'specificSet/:setName', element: <SpecificSetView />},
-      { path: 'image', element: <ImageView />}
+      { path: 'image/:imageName', element: <ImageView />}
     ]
   },
   {
